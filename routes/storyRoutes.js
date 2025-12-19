@@ -4,9 +4,15 @@ const Story = require("../models/Story");
 
 // Home page - list all stories
 router.get("/", async (req, res) => {
-  const stories = await Story.find();
-  res.render("index", { stories });
+  try {
+    const stories = await Story.find();
+    res.render("index", { stories });
+  } catch (err) {
+    console.error("HOME ROUTE ERROR:", err);
+    res.status(500).send("Something went wrong loading stories");
+  }
 });
+
 
 // Form to create new story
 router.get("/new", (req, res) => {

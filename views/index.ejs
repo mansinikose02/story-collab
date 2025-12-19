@@ -19,7 +19,8 @@
 
   <hr />
 
-  <% if (stories.length === 0) { %>
+  <% if (!stories || stories.length === 0) { %>
+
     <p>No stories yet. Create one!</p>
   <% } %>
 
