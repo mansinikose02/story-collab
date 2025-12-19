@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= story.title %></title>
+</head>
+<body>
+
+<link rel="stylesheet" href="/style.css">
+
+<div class="container">
+
+  <h1><%= story.title %></h1>
+
+  <hr />
+
+  <h3>Chapters</h3>
+
+ <ol>
+  <% story.chapters.forEach((chapter, index) => { %>
+    <li>
+      <strong>Chapter <%= index + 1 %></strong><br />
+      <div class="chapter-text">
+  <%= chapter.text || chapter %>
+</div>
+
+      <br />
+      <small>
+        Added on:
+        <%= new Date(chapter.createdAt || Date.now()).toLocaleString() %>
+      </small>
+
+      <form
+  action="/stories/<%= story._id %>/chapters/<%= index %>/delete"
+  method="POST"
+  style="display:inline;"
+  onsubmit="return confirm('Delete this chapter?');"
+>
+  <button type="submit">🗑</button>
+</form>
+
+    </li>
+  <% }) %>
+</ol>
+
+
+
+  <hr />
+
+  <h3>Add a New Chapter</h3>
+
+  <form action="/stories/<%= story._id %>/chapters" method="POST">
+    <textarea
+      name="chapter"
+      rows="5"
+      placeholder="Write the next chapter..."
+      required
+    ></textarea>
+
+    <br /><br />
+    
+  <button type="submit">Add Chapter</button>
+    <button class="delete-btn" type="submit" title="Delete chapter">🗑</button>
+
+  </form>
+
+  <br />
+  <a href="/">← Back to Home</a>
+
+</div>
+
+</body>
+</html>
