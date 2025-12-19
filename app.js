@@ -19,6 +19,10 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
 
+  app.get("/health", (req, res) => {
+  res.send("OK");
+});
+
 // ===== Routes =====
 const storyRoutes = require("./routes/storyRoutes");
 app.use("/", storyRoutes);
