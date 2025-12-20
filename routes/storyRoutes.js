@@ -44,24 +44,35 @@ router.get("/stories/:id", async (req, res) => {
 
 // Add a chapter
 router.post("/stories/:id/chapters", async (req, res) => {
-  const story = await Story.findById(req.params.id);
+  try {
+    const story = await Story.findById(req.params.id);
 
-  // 🔥 FIX: convert old string chapters to objects
-  story.chapters = story.chapters.map(ch =>
-    typeof ch === "string"
-      ? { text: ch, createdAt: new Date() }
-      : ch
-  );
+    // 🔥 STEP 1: Convert old string chapters to object format
+    story.chapters = story.chapters.map(ch => {
+      if (typeof ch === "string") {
+        return {
+          text: ch,
+          author: "Anonymous",
+          createdAt: new Date()
+        };
+      }
+      return ch;
+    });
 
-  // add new chapter correctly
-  story.chapters.push({
-    text: req.body.chapter
-  });
+    // 🔥 STEP 2: Add the new chapter with author
+    story.chapters.push({
+      text: req.body.chapter,
+      author: req.body.author || "Anonymous",
+      createdAt: new Date()
+    });
 
-  await story.save();
-  res.redirect(`/stories/${req.params.id}`);
+    await story.save();
+    res.redirect(`/stories/${req.params.id}`);
+  } catch (err) {
+    console.error("ADD CHAPTER ERROR:", err);
+    res.redirect(`/stories/${req.params.id}`);
+  }
 });
-
 
 
 // Delete a chapter by index
