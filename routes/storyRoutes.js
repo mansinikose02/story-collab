@@ -45,6 +45,8 @@ router.get("/stories/:id", async (req, res) => {
 // Add a chapter
 router.post("/stories/:id/chapters", async (req, res) => {
   try {
+    console.log(req.body);
+
     const story = await Story.findById(req.params.id);
 
     // 🔥 STEP 1: Convert old string chapters to object format
