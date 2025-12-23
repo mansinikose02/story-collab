@@ -23,7 +23,7 @@ router.get("/new", (req, res) => {
 router.post("/stories", async (req, res) => {
   await Story.create({
     title: req.body.title,
-    chapters: []   // ✅ start empty
+    chapters: []   
   });
 
   res.redirect("/");
@@ -49,22 +49,22 @@ router.post("/stories/:id/chapters", async (req, res) => {
 
     const story = await Story.findById(req.params.id);
 
-    // 🔥 STEP 1: Convert old string chapters to object format
+    // Convert old string chapters to object format
     story.chapters = story.chapters.map(ch => {
       if (typeof ch === "string") {
         return {
           text: ch,
-          author: "Anonymous",
+          // author: "Anonymous",
           createdAt: new Date()
         };
       }
       return ch;
     });
 
-    // 🔥 STEP 2: Add the new chapter with author
+    // Add the new chapter with author
     story.chapters.push({
       text: req.body.chapter,
-      author: req.body.author || "Anonymous",
+      // author: req.body.author || "Anonymous",
       createdAt: new Date()
     });
 
